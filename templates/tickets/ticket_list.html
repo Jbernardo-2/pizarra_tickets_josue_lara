@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Tickets{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Gestion</p>
+        <h1>Tickets</h1>
+    </div>
+    <a class="btn btn-primary" href="{% url 'tickets:create' %}">Crear ticket</a>
+</div>
+
+<form method="get" class="filters">
+    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Buscar por titulo, categoria o descripcion">
+    <select class="form-select" name="status">
+        <option value="">Todos los estados</option>
+        {% for value,label in statuses %}
+            <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-outline-primary" type="submit">Filtrar</button>
+</form>
+
+<div class="panel">
+    {% include 'tickets/partials/ticket_table.html' %}
+</div>
+{% endblock %}

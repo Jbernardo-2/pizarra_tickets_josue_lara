@@ -1,0 +1,9 @@
+<aside class="sidebar">
+    <a href="{% url 'dashboard:index' %}">Dashboard</a>
+    <a href="{% url 'dashboard:board' %}">Pizarra</a>
+    <a href="{% url 'tickets:list' %}">Tickets</a>
+    <a href="{% url 'tickets:create' %}">Crear ticket</a>
+    {% if user.is_staff %}
+        <a href="{% url 'admin:index' %}">Admin</a>
+    {% endif %}
+</aside>

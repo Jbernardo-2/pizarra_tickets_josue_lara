@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg app-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'dashboard:index' %}">Pizarra Tickets</a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small">{{ user.get_full_name|default:user.username }}</span>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-secondary btn-sm" type="submit">Salir</button>
+            </form>
+        </div>
+    </div>
+</nav>

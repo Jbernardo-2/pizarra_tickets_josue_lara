@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Resumen</p>
+        <h1>Dashboard</h1>
+    </div>
+    <div class="button-row">
+        <a class="btn btn-outline-primary" href="{% url 'dashboard:board' %}">Ver pizarra</a>
+        <a class="btn btn-primary" href="{% url 'tickets:create' %}">Crear ticket</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><span>Total</span><strong>{{ stats.total }}</strong></div>
+    <div class="stat-card"><span>Pendientes</span><strong>{{ stats.pending }}</strong></div>
+    <div class="stat-card"><span>Asignados</span><strong>{{ stats.assigned }}</strong></div>
+    <div class="stat-card"><span>En proceso</span><strong>{{ stats.in_progress }}</strong></div>
+    <div class="stat-card"><span>Resueltos</span><strong>{{ stats.resolved }}</strong></div>
+    <div class="stat-card"><span>Cerrados</span><strong>{{ stats.closed }}</strong></div>
+    <div class="stat-card"><span>Vencidos</span><strong>{{ stats.overdue }}</strong></div>
+</div>
+
+<div class="panel">
+    <div class="panel-header">
+        <h2>Tickets recientes</h2>
+        <a href="{% url 'tickets:list' %}">Ver todos</a>
+    </div>
+    {% include 'tickets/partials/ticket_table.html' with tickets=recent_tickets %}
+</div>
+{% endblock %}

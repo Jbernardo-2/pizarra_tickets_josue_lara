@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ ticket.title }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Ticket #{{ ticket.id }}</p>
+        <h1>{{ ticket.title }}</h1>
+    </div>
+    <div class="button-row">
+        {% if can_edit %}<a class="btn btn-outline-primary" href="{% url 'tickets:edit' ticket.pk %}">Editar</a>{% endif %}
+        {% if can_assign %}<a class="btn btn-outline-primary" href="{% url 'tickets:assign' ticket.pk %}">Asignar</a>{% endif %}
+        {% if can_work %}<a class="btn btn-primary" href="{% url 'tickets:work' ticket.pk %}">Actualizar</a>{% endif %}
+    </div>
+</div>
+
+<div class="detail-grid">
+    <article class="panel">
+        <div class="ticket-meta">
+            <span class="badge status-{{ ticket.status }}">{{ ticket.get_status_display }}</span>
+            <span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span>
+            {% if ticket.is_overdue %}<span class="badge bg-danger">Vencido</span>{% endif %}
+        </div>
+        <p class="ticket-description">{{ ticket.description }}</p>
+        <dl class="info-grid">
+            <div><dt>Categoria</dt><dd>{{ ticket.category }}</dd></div>
+            <div><dt>Creado por</dt><dd>{{ ticket.created_by }}</dd></div>
+            <div><dt>Asignado a</dt><dd>{{ ticket.assigned_to|default:'Sin asignar' }}</dd></div>
+            <div><dt>Fecha limite</dt><dd>{{ ticket.due_date|default:'-' }}</dd></div>
+        </dl>
+        <div class="progress large-progress">
+            <div class="progress-bar" style="width: {{ ticket.progress }}%">{{ ticket.progress }}%</div>
+        </div>
+    </article>
+
+    <aside class="panel">
+        <h2>Acciones</h2>
+        {% if can_close %}
+            <form method="post" action="{% url 'tickets:close' ticket.pk %}" class="mb-2" onsubmit="return confirm('Confirmar cierre del ticket');">
+                {% csrf_token %}
+                <button class="btn btn-success w-100" type="submit">Cerrar ticket</button>
+            </form>
+        {% endif %}
+        {% if can_cancel %}
+            <form method="post" action="{% url 'tickets:cancel' ticket.pk %}" onsubmit="return confirm('Confirmar cancelacion del ticket');">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger w-100" type="submit">Cancelar ticket</button>
+            </form>
+        {% endif %}
+    </aside>
+</div>
+
+<div class="detail-grid">
+    <section class="panel">
+        <h2>Comentarios</h2>
+        <form method="post" action="{% url 'tickets:comment' ticket.pk %}" class="stack-form">
+            {% csrf_token %}
+            {{ comment_form.comment }}
+            <button class="btn btn-outline-primary" type="submit">Agregar comentario</button>
+        </form>
+        <div class="timeline">
+            {% for comment in ticket.comments.all %}
+                <div class="timeline-item">
+                    <strong>{{ comment.user }}</strong>
+                    <span>{{ comment.created_at }}</span>
+                    <p>{{ comment.comment }}</p>
+                </div>
+            {% empty %}
+                <p class="text-muted">Aun no hay comentarios.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Archivos</h2>
+        {% if can_upload %}
+            <form method="post" action="{% url 'tickets:file' ticket.pk %}" enctype="multipart/form-data" class="stack-form">
+                {% csrf_token %}
+                {{ file_form.file }}
+                <button class="btn btn-outline-primary" type="submit">Subir archivo</button>
+            </form>
+        {% endif %}
+        <div class="file-list">
+            {% for file in ticket.files.all %}
+                <a href="{{ file.file.url }}" target="_blank" rel="noopener">{{ file.file.name }}</a>
+            {% empty %}
+                <p class="text-muted">Sin archivos adjuntos.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<section class="panel">
+    <h2>Historial</h2>
+    <div class="timeline">
+        {% for item in ticket.history.all %}
+            <div class="timeline-item">
+                <strong>{{ item.action }}</strong>
+                <span>{{ item.created_at }} por {{ item.user|default:'Sistema' }}</span>
+                {% if item.old_value or item.new_value %}<p>{{ item.old_value }} -> {{ item.new_value }}</p>{% endif %}
+            </div>
+        {% empty %}
+            <p class="text-muted">Sin historial registrado.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

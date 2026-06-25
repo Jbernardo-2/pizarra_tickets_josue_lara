@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar ticket{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Seguimiento</p>
+        <h1>{{ object.title }}</h1>
+    </div>
+</div>
+<div class="panel narrow-panel">
+    <form method="post" class="stack-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <a class="btn btn-outline-secondary" href="{{ object.get_absolute_url }}">Cancelar</a>
+            <button class="btn btn-primary" type="submit">Guardar avance</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

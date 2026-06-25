@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Pizarra de tickets{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Vista visual</p>
+        <h1>Pizarra de tickets</h1>
+    </div>
+    <div class="button-row">
+        <a class="btn btn-outline-primary" href="{% url 'dashboard:index' %}">Dashboard</a>
+        <a class="btn btn-primary" href="{% url 'tickets:create' %}">Crear ticket</a>
+    </div>
+</div>
+
+<section class="ticket-board">
+    {% for column in columns %}
+        <div class="board-column board-{{ column.status }}">
+            <div class="board-column-header">
+                <h2>{{ column.label }}</h2>
+                <span>{{ column.count }}</span>
+            </div>
+
+            <div class="board-card-list">
+                {% for ticket in column.tickets %}
+                    <a class="board-card {{ ticket.card_rotation }}" href="{{ ticket.get_absolute_url }}">
+                        <span class="board-pin"></span>
+                        <div class="board-card-top">
+                            <strong>#{{ ticket.id }}</strong>
+                            <span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span>
+                        </div>
+                        <h3>{{ ticket.title }}</h3>
+                        <p>{{ ticket.description|truncatechars:95 }}</p>
+                        <div class="board-card-meta">
+                            <span>{{ ticket.category }}</span>
+                            <span>{{ ticket.assigned_to|default:'Sin asignar' }}</span>
+                        </div>
+                        <div class="progress board-progress" role="progressbar" aria-valuenow="{{ ticket.progress }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: {{ ticket.progress }}%">{{ ticket.progress }}%</div>
+                        </div>
+                        <div class="board-card-footer">
+                            <span>{{ ticket.created_by }}</span>
+                            <span>{{ ticket.due_date|default:'Sin limite' }}</span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="board-empty">Sin tickets</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
