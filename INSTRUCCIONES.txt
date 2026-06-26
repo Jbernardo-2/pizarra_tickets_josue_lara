@@ -1,17 +1,8 @@
-Pizarra de Tickets - Instrucciones para evaluacion
+Pizarra de Tickets
 
-Este proyecto es un sistema web en Django para registrar, asignar y dar seguimiento a tickets de soporte.
-Se incluye el archivo db.sqlite3 con datos de prueba para que no sea necesario crear usuarios ni tickets manualmente.
-
-Para ejecutar el sistema:
-1. Instalar las dependencias:
-   pip install -r requirements.txt
-
-2. Iniciar el servidor:
-   python manage.py runserver
-
-3. Abrir en el navegador:
-   http://127.0.0.1:8000/
+El sistema es como una mezcla de un sistema de Help Desk puro y un un gestor
+ de tareas puro, tipo hibrido
+de gestión de tickets, que es algo que muchas empresas usan internamente.
 
 Usuarios de prueba:
 - Supervisor
