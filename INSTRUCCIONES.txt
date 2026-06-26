@@ -1,0 +1,45 @@
+Pizarra de Tickets - Instrucciones para evaluacion
+
+Este proyecto es un sistema web en Django para registrar, asignar y dar seguimiento a tickets de soporte.
+Se incluye el archivo db.sqlite3 con datos de prueba para que no sea necesario crear usuarios ni tickets manualmente.
+
+Para ejecutar el sistema:
+1. Instalar las dependencias:
+   pip install -r requirements.txt
+
+2. Iniciar el servidor:
+   python manage.py runserver
+
+3. Abrir en el navegador:
+   http://127.0.0.1:8000/
+
+Usuarios de prueba:
+- Supervisor
+  Usuario: Isrrael
+  Contrasena: Isrra2026.
+
+- Tecnico
+  Usuario: Julio
+  Contrasena: Julio2026.
+
+- Usuario normal
+  Usuario: Juan
+  Contrasena: Juan2026.
+
+Logica de funcionamiento:
+- El usuario normal puede crear tickets, ver sus propios tickets, comentar y editar un ticket mientras este pendiente.
+- El tecnico puede ver los tickets asignados a el, actualizar el estado/progreso, comentar y adjuntar archivos.
+- El supervisor puede ver todos los tickets, asignarlos a tecnicos, editarlos, cerrarlos y cancelarlos.
+
+Estados principales del ticket:
+- Pendiente: ticket creado y sin asignar.
+- Asignado: ticket asignado a un tecnico.
+- En progreso: ticket que ya se esta trabajando.
+- Resuelto: ticket atendido por el tecnico.
+- Cerrado: ticket finalizado por supervisor.
+- Cancelado: ticket anulado por supervisor.
+
+Sobre edicion y eliminacion:
+- El sistema permite editar tickets mediante la opcion "Editar".
+- El sistema no elimina tickets de forma definitiva desde la interfaz.
+- Para retirar un ticket del flujo normal se usa la opcion "Cancelar ticket", disponible para supervisor.
